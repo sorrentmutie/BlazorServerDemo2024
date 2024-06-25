@@ -11,6 +11,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddScoped<IEventi, ServizioStaticoEventi>();
+builder.Services.AddScoped<IPersona, ServizioStaticoPersone>();
 
 var app = builder.Build();
 

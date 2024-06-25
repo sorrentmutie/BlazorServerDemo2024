@@ -1,0 +1,69 @@
+﻿@page "/persone"   
+@inject IPersona servizioPersone
+
+<button @onclick="() => AggiungiPersona()" class="btn btn-info">Aggiungi Persona</button>
+
+@if(persona == null)
+{
+    @foreach (var persona in persone)
+    {
+        <div>
+            <h3> @persona.Nome @persona.Cognome </h3>
+             <button @onclick="() => Modifica(persona)">Modifica</button>
+
+
+
+        </div>
+    }
+} else
+{
+    <Dettaglio TItem="Persona" Item="persona" OnSalva="Salva" OnAnnulla="Annulla">
+        <FormFields>
+            <MyInputText Label="Nome" Id="nome" @bind-Value="context.Nome"></MyInputText>
+            <MyInputText Label="Cognome" Id="cognome" @bind-Value="context.Cognome"></MyInputText>
+        </FormFields>
+    </Dettaglio>
+}
+
+
+
+
+
+@code {
+
+    private List<Persona> persone = new List<Persona>();
+    private Persona? persona;
+
+    private void Modifica(Persona personaDaModificare)
+    {
+        persona = personaDaModificare;
+    }
+
+    private void Salva(Persona personaNuova)
+    {
+        if (personaNuova.Id > 0)
+        {
+            servizioPersone.ModificaPersona(personaNuova);
+        } else
+        {
+            servizioPersone.AggiungiPersona(personaNuova);
+        }
+        persone = servizioPersone.EstraiPersone().ToList();
+        persona = null;
+    }
+
+    private void Annulla()
+    {
+        persona = null;
+    }   
+
+    protected override void OnInitialized()
+    {
+        persone = servizioPersone.EstraiPersone().ToList();
+    }
+
+    private void AggiungiPersona()
+    {
+        persona = new Persona();
+    }
+}

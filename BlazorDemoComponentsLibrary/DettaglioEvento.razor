@@ -1,0 +1,48 @@
+﻿@using BlazorServerDemo2024.Core
+
+<EditForm Model="Dettaglio" OnValidSubmit="() => OnSalva.InvokeAsync(Dettaglio)">
+
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+
+    <div class="form-group">
+        <label for="nome">Nome</label>
+        <InputText id="nome" class="form-control" @bind-Value="Dettaglio.Nome"></InputText>
+        <ValidationMessage For="() => Dettaglio.Nome"></ValidationMessage>
+    </div>
+
+    <div class="form-group">
+        <label for="descrizione">Descrizione</label>
+        <InputText id="descrizione" class="form-control" @bind-Value="Dettaglio.Descrizione"></InputText>
+        <ValidationMessage For="() => Dettaglio.Descrizione"></ValidationMessage>
+    </div>
+
+    <div class="form-group">
+        <label for="localita">Località</label>
+        <InputText id="localita" class="form-control" @bind-Value="Dettaglio.Località"></InputText>
+        <ValidationMessage For="() => Dettaglio.Località"></ValidationMessage>
+    </div>
+
+    <div class="form-group">
+        <label for="data">Data</label>
+        <InputDate id="data" class="form-control" @bind-Value="Dettaglio.Data"></InputDate>
+    </div>
+
+    <button class="btn btn-info" type="submit">Salva</button>
+    <button class="btn btn-danger" @onclick="() => OnAnnulla.InvokeAsync()" type="button">Annulla</button>
+</EditForm>
+
+
+
+
+
+@code {
+    [Parameter]
+    public Evento? Dettaglio { get; set; }
+
+    [Parameter]
+    public EventCallback<Evento> OnSalva { get; set; }
+
+    [Parameter]
+    public EventCallback OnAnnulla { get; set; }
+}

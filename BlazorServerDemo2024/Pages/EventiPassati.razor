@@ -1,5 +1,100 @@
 ﻿@page "/eventipassati"
 @inject IEventi servizioEventi
 
-<ListaEventi Eventi="servizioEventi.EstraiEventiPassati().ToList()" Titolo="Lista Eventi Passati" />
+@if(dettaglio is null)
+{
+  <button @onclick="() => Aggiungi()" class="btn btn-success">Aggiungi Evento</button>
 
+  <ListaEventi Eventi="eventiPassati" Titolo="Lista Eventi Passati" 
+      OnEliminaEvento="Elimina" OnModificaEvento="Modifica" />
+}
+else
+{   
+  <Dettaglio TItem="Evento" Item="dettaglio" OnSalva="Salva" OnAnnulla="Annulla">
+
+      <FormFields>
+
+           <MyInputText Label="Nome" Id="nome" @bind-Value="context.Nome"></MyInputText>
+           <MyInputText Label="Descrizione" Id="desc" @bind-Value="context.Descrizione"></MyInputText>
+           <MyInputText Label="Località" Id="loc" @bind-Value="context.Località"></MyInputText>
+           <MyInputDate Label="Data" Id="data" @bind-Value="context.Data"></MyInputDate>
+
+           @*  <div class="form-group">
+                <label for="nome">Nome</label>
+                <InputText id="nome" class="form-control" @bind-Value="context.Nome"></InputText>
+                <ValidationMessage For="() => context.Nome"></ValidationMessage>
+            </div> *@
+
+           @*  <div class="form-group">
+                <label for="descrizione">Descrizione</label>
+                <InputText id="descrizione" class="form-control" @bind-Value="context.Descrizione"></InputText>
+                <ValidationMessage For="() => context.Descrizione"></ValidationMessage>
+            </div> *@
+
+            @* <div class="form-group">
+                <label for="localita">Località</label>
+                <InputText id="localita" class="form-control" @bind-Value="context.Località"></InputText>
+                <ValidationMessage For="() => context.Località"></ValidationMessage>
+            </div> *@
+
+@*             <div class="form-group">
+                <label for="data">Data</label>
+                <InputDate id="data" class="form-control" @bind-Value="context.Data"></InputDate>
+            </div>
+ *@
+
+
+
+      </FormFields>
+
+  </Dettaglio>
+
+
+}
+
+@code {
+    private Evento? dettaglio;
+    private List<Evento> eventiPassati = new List<Evento>();
+
+    protected override void OnInitialized()
+    {
+        eventiPassati = servizioEventi.EstraiEventiPassati().ToList();
+    }
+
+    private void Salva(Evento evento)
+    {
+        if(evento.Id > 0)
+        {
+            servizioEventi.ModificaEventoPassato(evento);
+        } else
+        {
+            servizioEventi.AggiungiEventoPassato(evento);
+        }
+
+        eventiPassati = servizioEventi.EstraiEventiPassati().ToList();
+        dettaglio = null;
+    }
+
+    private void Annulla()
+    {
+        dettaglio = null;
+    }
+
+    private void Aggiungi()
+    {
+        dettaglio = new Evento();
+    }
+
+    private void Modifica(Evento evento)
+    {
+        dettaglio = evento;
+    }
+
+    private void Elimina(Evento evento)
+    {
+        servizioEventi.EliminaEventoPassato(evento.Id);
+        eventiPassati = servizioEventi.EstraiEventiPassati().ToList();
+        dettaglio = null;
+    }
+
+}

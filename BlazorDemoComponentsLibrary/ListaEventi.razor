@@ -23,7 +23,11 @@
                 <td>@item.Descrizione</td>
                 <td>@item.Località</td>
                 <td>@item.Data.ToShortDateString()</td>
-                <td><button @onclick="() => OnEliminaEvento.InvokeAsync(item)" class="btn btn-danger">Elimina</button></td>
+                <td>
+                    <button @onclick="() => OnEliminaEvento.InvokeAsync(item)" class="btn btn-danger">Elimina</button>
+                    <button @onclick="() => OnModificaEvento.InvokeAsync(item)" class="btn btn-danger">Modifica</button>
+
+                </td>
             </tr>
         }
     </tbody>
@@ -38,4 +42,8 @@
 
     [Parameter]
     public EventCallback<Evento>  OnEliminaEvento { get; set; }
+
+    [Parameter]
+    public EventCallback<Evento> OnModificaEvento { get; set; }
+
 }

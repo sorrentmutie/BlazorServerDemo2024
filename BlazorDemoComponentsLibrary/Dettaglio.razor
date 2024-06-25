@@ -1,0 +1,33 @@
+﻿@using BlazorServerDemo2024.Core
+@typeparam TItem
+
+
+<EditForm Model="Item" OnValidSubmit="() => OnSalva.InvokeAsync(Item)">
+
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    @FormFields!(Item!)
+
+    <button class="btn btn-info" type="submit">Salva</button>
+    <button class="btn btn-danger" @onclick="() => OnAnnulla.InvokeAsync()" type="button">Annulla</button>
+</EditForm>
+
+
+
+
+
+@code {
+
+    [Parameter]
+    public RenderFragment<TItem>? FormFields { get; set; }
+
+    [Parameter]
+    public TItem? Item { get; set; }
+
+    [Parameter]
+    public EventCallback<TItem> OnSalva { get; set; }
+
+    [Parameter]
+    public EventCallback OnAnnulla { get; set; }
+}

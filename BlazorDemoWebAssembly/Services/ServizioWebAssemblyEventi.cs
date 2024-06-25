@@ -4,6 +4,16 @@ namespace BlazorDemoWebAssembly.Services;
 
 public class ServizioWebAssemblyEventi : IEventi
 {
+    public void AggiungiEventoPassato(Evento evento)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void EliminaEventoPassato(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public IEnumerable<Evento> EstraiEventiFuturi()
     {
         return new List<Evento>
@@ -26,6 +36,11 @@ public class ServizioWebAssemblyEventi : IEventi
     }
 
     public IEnumerable<Evento> EstraiEventiPassati()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ModificaEventoPassato(Evento evento)
     {
         throw new NotImplementedException();
     }

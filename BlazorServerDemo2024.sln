@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorServerDemo2024", "BlazorServerDemo2024\BlazorServerDemo2024.csproj", "{FDACB2CC-5FD0-4AAC-8133-5F0951E8882E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerDemo2024", "BlazorServerDemo2024\BlazorServerDemo2024.csproj", "{FDACB2CC-5FD0-4AAC-8133-5F0951E8882E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorServerDemo2024.Core", "BlazorServerDemo2024.Core\BlazorServerDemo2024.Core.csproj", "{0F772732-FA0D-4BDD-B3A0-5D086828AA4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServerDemo2024.Core", "BlazorServerDemo2024.Core\BlazorServerDemo2024.Core.csproj", "{0F772732-FA0D-4BDD-B3A0-5D086828AA4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorDemoComponentsLibrary", "BlazorDemoComponentsLibrary\BlazorDemoComponentsLibrary.csproj", "{8A1FD271-6E2A-4062-83DF-12B94D8D4C1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorDemoComponentsLibrary", "BlazorDemoComponentsLibrary\BlazorDemoComponentsLibrary.csproj", "{8A1FD271-6E2A-4062-83DF-12B94D8D4C1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorDemoWebAssembly", "BlazorDemoWebAssembly\BlazorDemoWebAssembly.csproj", "{47A2E66A-FFAE-442E-9784-98915F0E3E69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorDemoWebAssembly", "BlazorDemoWebAssembly\BlazorDemoWebAssembly.csproj", "{47A2E66A-FFAE-442E-9784-98915F0E3E69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
