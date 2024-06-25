@@ -1,0 +1,5 @@
+﻿@page "/eventipassati"
+@inject IEventi servizioEventi
+
+<ListaEventi Eventi="servizioEventi.EstraiEventiPassati().ToList()" Titolo="Lista Eventi Passati" />
+

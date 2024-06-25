@@ -1,0 +1,41 @@
+﻿
+<h3>@Titolo</h3>
+
+<table class="table table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nome</th>
+            <th>Descrizione</th>
+            <th>Località</th>
+            <th>Data</th>
+            <th></th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+        @foreach (var item in Eventi)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Nome</td>
+                <td>@item.Descrizione</td>
+                <td>@item.Località</td>
+                <td>@item.Data.ToShortDateString()</td>
+                <td><button @onclick="() => OnEliminaEvento.InvokeAsync(item)" class="btn btn-danger">Elimina</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public string Titolo { get; set; } = "Lista Eventi";
+
+    [Parameter]
+    public List<Evento> Eventi { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<Evento>  OnEliminaEvento { get; set; }
+}

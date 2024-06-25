@@ -1,0 +1,54 @@
+﻿@page "/"
+@using BlazorDemoComponentsLibrary
+@inject IEventi servizioEventi
+
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+<MyFirstComponent>
+
+    <ChildContent>
+        <h3>Prova</h3>
+    </ChildContent>
+
+    <Footer>
+        <p>Questo è il footer</p>
+    </Footer>
+</MyFirstComponent>
+
+<ListaEventi Eventi="EventiFuturi" Titolo="Lista Eventi Futuri"
+             OnEliminaEvento="EliminaEvento"/>
+
+
+Welcome to your new app.
+
+@code {
+    private void EliminaEvento(Evento evento)
+    {
+        EventiFuturi.Remove(evento);
+    }
+
+    private List<Evento> EventiFuturi = new();
+
+    protected override void OnInitialized()
+    {
+        EventiFuturi = servizioEventi.EstraiEventiFuturi().ToList();    
+    }
+
+    // protected override void OnParametersSet()
+    // {
+    //     base.OnParametersSet();
+    // }
+
+    // protected override void OnAfterRender(bool firstRender)
+    // {
+    //     base.OnAfterRender(firstRender);
+    // }
+
+}
+
+
+
+
+

@@ -1,0 +1,18 @@
+﻿@ChildContent
+<h3>My First Component: @saluto</h3>
+@Footer
+
+
+
+
+@code {
+    private string saluto = "Ciao, Blazor!";
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public RenderFragment? Footer { get; set; }
+
+
+}
