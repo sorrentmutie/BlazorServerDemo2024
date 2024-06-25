@@ -1,3 +1,5 @@
+using BlazorDemoComponentsLibrary.Data;
+
 namespace BlazorServerDemo2024.Data
 {
     public class WeatherForecastService

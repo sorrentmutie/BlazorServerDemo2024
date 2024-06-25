@@ -16,4 +16,8 @@
     <ProjectReference Include="..\BlazorServerDemo2024.Core\BlazorServerDemo2024.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Shared\" />
+  </ItemGroup>
+
 </Project>

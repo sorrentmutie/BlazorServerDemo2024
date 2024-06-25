@@ -1,4 +1,4 @@
-namespace BlazorServerDemo2024.Data
+namespace BlazorDemoComponentsLibrary.Data
 {
     public class WeatherForecast
     {
