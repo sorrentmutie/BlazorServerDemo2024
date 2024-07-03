@@ -1,8 +1,11 @@
+using BlazorDemo.Data.Interfaces;
+using BlazorDemo.Data.Models;
 using BlazorServerDemo2024.Core;
 using BlazorServerDemo2024.Data;
 using BlazorServerDemo2024.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +15,10 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddScoped<IEventi, ServizioStaticoEventi>();
 builder.Services.AddScoped<IPersona, ServizioStaticoPersone>();
+builder.Services.AddDbContext<NorthwindContext>
+    (options => options.UseSqlServer(builder.Configuration.GetConnectionString("Northwind")));
+builder.Services.AddScoped<ICategoriesData, CategoriesDataSQLServer>();
+
 
 var app = builder.Build();
 

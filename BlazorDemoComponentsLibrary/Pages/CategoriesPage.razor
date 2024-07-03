@@ -1,0 +1,47 @@
+﻿@page "/categories"
+@using BlazorDemo.Data.Interfaces
+@using BlazorServerDemo2024.Core.DTO
+@using Microsoft.EntityFrameworkCore
+@inject ICategoriesData categoriesData
+
+<h3>Categories Page</h3>
+
+@if(categorie == null)
+{
+    <p><em>Caricamento Dati...</em></p>
+}
+else
+{
+    @* @foreach (var categoria in categories)
+    {
+        <p>@categoria.CategoryName</p>
+    } *@
+
+    @foreach (var categoria in categorie)
+    {
+        <p>@categoria.Nome</p>
+    }
+
+}
+
+
+@code {
+    List<CategoriaDTO>? categorie = new List<CategoriaDTO>();
+
+    // List<Category>? categories = new List<Category>();
+    protected override async Task OnInitializedAsync()
+    {
+
+        // categorie = (await categoriesData.EstraiCategorieAsync())?.ToList();
+        var data = categoriesData.EstraiCategorie();
+        if(data is not null)
+        {
+            categorie = await (data.Where(c => c.Nome.Length > 5)).ToListAsync();
+        }
+
+
+        // categories = (await categoriesData.GetCategoriesAsync()).ToList();
+        // categories =  await categoriesData.GetCategories().Where(c => c.CategoryName.Length > 5).ToListAsync();
+    }
+    
+}
