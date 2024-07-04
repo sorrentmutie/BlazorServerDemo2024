@@ -15,7 +15,7 @@ builder.Services.AddSwaggerGen();
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(
+    options.AddPolicy(MyAllowSpecificOrigins,
         builder => builder.AllowAnyOrigin()
         .AllowAnyHeader()
         .AllowAnyMethod());
@@ -40,6 +40,9 @@ builder.Services.AddScoped<IGenericData<Customer,
 
 var app = builder.Build();
 
+app.UseCors(MyAllowSpecificOrigins);
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -48,11 +51,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors(MyAllowSpecificOrigins);
 
 var categoriesGroup = app.MapGroup("/categories");
 
-categoriesGroup.MapGet("/", async ( 
+categoriesGroup.MapGet("/", async (
     IGenericData<Category, CategoriaDTO, CreaCategoriaDTO, int>
     categoriesService) => {
     return Results.Ok(await categoriesService.EstraiItemsAsync());
@@ -63,6 +65,7 @@ categoriesGroup.MapGet("/{id}", async (int id, IGenericData<Category, CategoriaD
     var category = await categoriesService.EstraiItemPerId(id);
     return category is not null ? Results.Ok(category) : Results.NotFound();
 });
+
 
 categoriesGroup.MapPost("/", async (CreaCategoriaDTO newCategory,
     IGenericData<Category, CategoriaDTO, CreaCategoriaDTO, int>
