@@ -2,7 +2,7 @@
 @using BlazorDemo.Data.Interfaces
 @using BlazorServerDemo2024.Core.DTO
 @using Microsoft.EntityFrameworkCore
-@inject ICategoriesData categoriesData
+@inject IGenericData<Category, CategoriaDTO, CreaCategoriaDTO, int> categoriesData
 
 <h3>Categories Page</h3>
 
@@ -12,36 +12,97 @@
 }
 else
 {
-    @* @foreach (var categoria in categories)
+    @if(categoriaDTO is null)
     {
-        <p>@categoria.CategoryName</p>
-    } *@
-
-    @foreach (var categoria in categorie)
+        <button class="btn btn-info" @onclick="() => AggiungiCategoria()">Aggiungi Categoria</button>
+        <ListaCategorie Categorie="categorie"
+            OnEliminaCategoria="Elimina" OnModificaCategoria="Modifica"></ListaCategorie>
+    } else
     {
-        <p>@categoria.Nome</p>
+        <Dettaglio TItem="CategoriaDTO" Item="categoriaDTO"
+                   OnSalva="Salva" OnAnnulla="Annulla">
+            <FormFields>
+                <MyInputText Label="Nome" Id="nome" @bind-Value="context.Nome"></MyInputText>
+                <MyInputText Label="Descrizione" Id="descrizione" @bind-Value="context.Descrizione"></MyInputText>
+             
+            </FormFields>
+        </Dettaglio>
     }
-
 }
+
 
 
 @code {
     List<CategoriaDTO>? categorie = new List<CategoriaDTO>();
+    CategoriaDTO? categoriaDTO;
+
+    private async Task Salva(CategoriaDTO categoria)
+    {
+        if(categoria.Id == 0)
+        {
+
+            await categoriesData.AggiungiItem(new CreaCategoriaDTO
+            {
+                 Descrizione = categoria.Descrizione,
+                 Nome = categoria.Nome
+            });
+        } else
+        {
+            await categoriesData.ModificaItem(categoria);
+        }
+
+        categoriaDTO = null;
+        categorie = (await categoriesData.EstraiItemsAsync())?.ToList();
+
+    }
+
+    private void Modifica(CategoriaDTO categoriaDTOModificata)
+    {
+        categoriaDTO = categoriaDTOModificata;
+
+        // await categoriesData.ModificaCategoria(categoriaDTO);
+        // categorie = (await categoriesData.EstraiCategorieAsync())?.ToList();
+    }
+
+    private async Task Elimina(CategoriaDTO categoriaDTO)
+    {
+        await categoriesData.EliminaItem(categoriaDTO.Id);
+        categorie = (await categoriesData.EstraiItemsAsync())?.ToList();
+    }
+
+
+    private void Annulla()
+    {
+        categoriaDTO = null;    
+
+    }
 
     // List<Category>? categories = new List<Category>();
     protected override async Task OnInitializedAsync()
     {
 
-        // categorie = (await categoriesData.EstraiCategorieAsync())?.ToList();
-        var data = categoriesData.EstraiCategorie();
-        if(data is not null)
-        {
-            categorie = await (data.Where(c => c.Nome.Length > 5)).ToListAsync();
-        }
+        categorie = (await categoriesData.EstraiItemsAsync())?.ToList();
+        // var data = categoriesData.EstraiCategorie();
+        // if(data is not null)
+        // {
+        //     categorie = await (data.Where(c => c.Nome.Length > 5)).ToListAsync();
+        // }
 
 
         // categories = (await categoriesData.GetCategoriesAsync()).ToList();
         // categories =  await categoriesData.GetCategories().Where(c => c.CategoryName.Length > 5).ToListAsync();
     }
-    
+
+    public void AggiungiCategoria()
+    {
+        categoriaDTO = new CategoriaDTO();
+
+         // var categoria = new CreaCategoriaDTO()
+         // {
+         //     Nome = "Categoria 1",
+         //     Descrizione = "Descrizione Categoria 1"
+         // };
+         // await categoriesData.AggiungiCategoria(categoria);
+    }
+
 }

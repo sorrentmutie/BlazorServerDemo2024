@@ -1,6 +1,8 @@
+using BlazorDemo.Data;
 using BlazorDemo.Data.Interfaces;
 using BlazorDemo.Data.Models;
 using BlazorServerDemo2024.Core;
+using BlazorServerDemo2024.Core.DTO;
 using BlazorServerDemo2024.Data;
 using BlazorServerDemo2024.Services;
 using Microsoft.AspNetCore.Components;
@@ -17,7 +19,21 @@ builder.Services.AddScoped<IEventi, ServizioStaticoEventi>();
 builder.Services.AddScoped<IPersona, ServizioStaticoPersone>();
 builder.Services.AddDbContext<NorthwindContext>
     (options => options.UseSqlServer(builder.Configuration.GetConnectionString("Northwind")));
-builder.Services.AddScoped<ICategoriesData, CategoriesDataSQLServer>();
+
+builder.Services.AddScoped<IRepository<Category, int>,
+    GenericRepository<Category, int>>();
+builder.Services.AddScoped<IRepository<Customer, string>,
+    GenericRepository<Customer, string>>();
+
+builder.Services.AddScoped<DbContext, NorthwindContext>();
+
+builder.Services.AddScoped<IGenericData<Category,
+     CategoriaDTO, CreaCategoriaDTO, int>, GenericCategoriesDataService>();
+builder.Services.AddScoped<IGenericData<Customer,
+     ClienteDTO, ClienteDTO, string>, GenericCustomersDataService>();
+
+
+
 
 
 var app = builder.Build();

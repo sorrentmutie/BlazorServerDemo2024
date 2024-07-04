@@ -1,4 +1,7 @@
 ﻿@page "/counter"
+@using BlazorServerDemo2024.Core.DTO
+@* @inject IGenericData<Customer, ClienteDTO, ClienteDTO, string> customersData
+ *@
 
 <PageTitle>Counter</PageTitle>
 
@@ -9,11 +12,36 @@
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 
+@* @if(customers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @foreach (var customer in customers)
+    {
+        <p>@customer.Codice @customer.Nome @customer.IndirizzoCompleto</p>
+    }
+} *@
+
 
 <hr/>
 
 
 @code {
+
+    List<ClienteDTO>? customers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // var data = await customersData.EstraiItemsAsync();
+        // if(data is not null)
+        // {
+        //     customers = data.ToList();
+        // }
+        
+    }
+
     private int currentCount = 0;
 
     private void IncrementCount()

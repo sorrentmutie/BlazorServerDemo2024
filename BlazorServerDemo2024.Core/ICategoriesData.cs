@@ -10,5 +10,7 @@ public interface ICategoriesData
     Task<IEnumerable<CategoriaDTO>?> EstraiCategorieAsync();
     IQueryable<CategoriaDTO>? EstraiCategorie();
     Task<int> AggiungiCategoria(CreaCategoriaDTO nuovaCategoria);
-
+    Task EliminaCategoria(int id);  
+    Task ModificaCategoria(CategoriaDTO categoria);
 }
+ 

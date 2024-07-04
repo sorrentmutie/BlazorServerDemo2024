@@ -23,14 +23,24 @@ public class CategoriesDataSQLServer : ICategoriesData
         };
         northwindContext.Categories.Add(category);
         await northwindContext.SaveChangesAsync();
-        return category.CategoryId;
+        return category.Id;
+    }
+
+    public async Task EliminaCategoria(int id)
+    {
+        var category = await northwindContext.Categories.FindAsync(id);
+        if (category != null)
+        {
+            northwindContext.Categories.Remove(category);
+            await northwindContext.SaveChangesAsync();
+        }
     }
 
     public IQueryable<CategoriaDTO>? EstraiCategorie()
     {
         return northwindContext.Categories.Select(c => new CategoriaDTO
         {
-            Id = c.CategoryId,
+            Id = c.Id,
             Nome = c.CategoryName,
             Descrizione = c.Description
         });
@@ -41,11 +51,23 @@ public class CategoriesDataSQLServer : ICategoriesData
         return  await northwindContext.Categories
             .Select(c => new CategoriaDTO
             {
-                Id = c.CategoryId,
+                Id = c.Id,
                 Nome = c.CategoryName,
-                Descrizione = c.Description
+                Descrizione = c.Description,
+                NumeroProdotti = c.Products.Count
             })
             .ToListAsync();
+    }
+
+    public async Task ModificaCategoria(CategoriaDTO categoria)
+    {
+        var categoriaDb = await northwindContext.Categories.FindAsync(categoria.Id);
+        if(categoriaDb != null)
+        {
+            categoriaDb.CategoryName = categoria.Nome;
+            categoriaDb.Description = categoria.Descrizione;
+            await northwindContext.SaveChangesAsync();
+        }
     }
 
     //public IQueryable<Category> GetCategories()

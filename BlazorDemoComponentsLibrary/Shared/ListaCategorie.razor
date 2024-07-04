@@ -1,0 +1,43 @@
+﻿@using BlazorServerDemo2024.Core.DTO
+
+@if(Categorie is not null)
+{
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Descrizione</th>
+                <th>Id</th>
+                <th>Numero Prodotti</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var categoria in Categorie)
+            {
+                <tr>
+                    <td>@categoria.Nome</td>
+                    <td>@categoria.Descrizione</td>
+                    <td>@categoria.Id</td>
+                    <td>@categoria.NumeroProdotti</td>
+                    <td>
+                        <button class="btn btn-danger" @onclick="() => OnEliminaCategoria.InvokeAsync(categoria)">Elimina</button>
+                        <button class="btn btn-warning" @onclick="() => OnModificaCategoria.InvokeAsync(categoria)">Modifica</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+} else
+{
+        <p><em>Caricamento Dati...</em></p>
+}
+
+
+
+
+@code {
+
+    [Parameter] public List<CategoriaDTO>? Categorie { get; set; }
+    [Parameter] public EventCallback<CategoriaDTO> OnEliminaCategoria { get; set; }
+    [Parameter] public EventCallback<CategoriaDTO> OnModificaCategoria { get; set; }
+
+}

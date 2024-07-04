@@ -47,7 +47,7 @@ public partial class NorthwindContext : DbContext
         {
             entity.HasIndex(e => e.CategoryName, "CategoryName");
 
-            entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
+            entity.Property(e => e.Id).HasColumnName("CategoryID");
             entity.Property(e => e.CategoryName)
                 .IsRequired()
                 .HasMaxLength(15);
@@ -65,7 +65,7 @@ public partial class NorthwindContext : DbContext
 
             entity.HasIndex(e => e.Region, "Region");
 
-            entity.Property(e => e.CustomerId)
+            entity.Property(e => e.Id)
                 .HasMaxLength(5)
                 .IsFixedLength()
                 .HasColumnName("CustomerID");
