@@ -1,13 +1,14 @@
 ﻿@page "/"
 @using BlazorDemoComponentsLibrary
+@using BlazorDemoComponentsLibrary.Interop
 @inject IEventi servizioEventi
+@inject IJSRuntime jsRuntime
 
 
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
 <MyFirstComponent>
-
     <ChildContent>
         <h3>Prova</h3>
     </ChildContent>
@@ -17,13 +18,59 @@
     </Footer>
 </MyFirstComponent>
 
+<button class="btn btn-success" @onclick="() => ApriModale()">Apri modale</button>
+
+
 <ListaEventi Eventi="EventiFuturi" Titolo="Lista Eventi Futuri"
              OnEliminaEvento="EliminaEvento"/>
+
+<MyModal Id="modal1" Title="La mia prima modale"
+    OnSalva= "Salva" OnAnnulla="Annulla">
+    <ChildContent>
+        <h3>Prova</h3>
+        <Counter></Counter>
+    </ChildContent>
+</MyModal>
+
+
+<MyMap Id="map" Zoom="zoom" Latitude="latitude" Longitude="longitude" Markers="markers"/>
+<hr/>
+<MyMap Id="map2" Zoom="zoom" Latitude="latitude2" Longitude="longitude2" />
 
 
 Welcome to your new app.
 
 @code {
+
+    private double latitude = 45.4642;
+    private double longitude = 9.1900;
+    private double latitude2 = 45.1234;
+    private double longitude2 = 9.5678;
+
+    private int zoom = 14;
+    private List<MapMarker> markers = new List<MapMarker>()
+    {
+     new MapMarker { Lat = 45.4642, Lng = 9.1900, PopupContent = "Duomo di Milano" },
+     new MapMarker { Lat = 45.1234, Lng = 9.5678, PopupContent = "Supermercato Conad" },
+     new MapMarker { Lat = 45.6789, Lng = 9.8765, PopupContent = "Stazione Centrale" },
+     new MapMarker { Lat = 45.4321, Lng = 9.6543, PopupContent = "Piazza Gae" }
+   };
+
+
+    private async Task Salva()
+    {
+        await jsRuntime.InvokeVoidAsync("nascondiModale");
+    }
+
+    private async Task Annulla()
+    {
+        await jsRuntime.InvokeVoidAsync("nascondiModale");
+    }
+
+    public async Task ApriModale(){
+        await jsRuntime.InvokeVoidAsync("mostraModale", "modal1");
+    }
+
     private void EliminaEvento(Evento evento)
     {
         EventiFuturi.Remove(evento);
@@ -36,6 +83,8 @@ Welcome to your new app.
         EventiFuturi = servizioEventi.EstraiEventiFuturi().ToList();    
     }
 
+    
+
     // protected override void OnParametersSet()
     // {
     //     base.OnParametersSet();
@@ -44,7 +93,7 @@ Welcome to your new app.
     // protected override void OnAfterRender(bool firstRender)
     // {
     //     base.OnAfterRender(firstRender);
-    // }
+        // }
 
 }
 

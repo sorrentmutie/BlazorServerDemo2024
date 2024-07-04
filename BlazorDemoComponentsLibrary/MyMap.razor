@@ -1,0 +1,54 @@
+﻿@using BlazorDemoComponentsLibrary.Interop
+@inject IJSRuntime jsRuntime
+
+<div id="@Id" class="mapHeight"></div>
+
+@code {
+
+    [Parameter] 
+    public string Id { get; set; } ="map";
+
+    [Parameter]
+    public double Latitude { get; set; }
+
+    [Parameter]
+    public double Longitude { get; set; }
+
+    [Parameter]
+    public int Zoom { get; set; }
+
+    [Parameter]
+    public List<MapMarker>? Markers { get; set; }
+
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if(Markers is null)
+            {
+                await jsRuntime.InvokeVoidAsync("disegnaMappa", Latitude,
+                Longitude, Zoom, Id);
+            } else
+            {
+                await jsRuntime.InvokeVoidAsync("disegnaMappa", Latitude,
+                Longitude, Zoom, Id, Markers);
+
+            }
+
+        }
+    }
+
+    [JSInvokable]
+    public static string GetPopUp(string mapId)
+    {
+        switch (mapId)
+        {
+            case "map":
+                return "<b>Map1</b><br>Duomo di Milano";
+            default:
+                return "<b>Map2</b><br>Supermercato Conad";
+        }
+    }
+
+}

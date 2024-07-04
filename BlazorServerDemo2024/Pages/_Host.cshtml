@@ -14,6 +14,10 @@
     <link href="css/site.css" rel="stylesheet" />
     <link href="BlazorServerDemo2024.styles.css" rel="stylesheet" />
     <link rel="icon" type="image/png" href="favicon.png"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin="" />
+
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 </head>
 <body>
@@ -32,6 +36,50 @@
 
     <script src="_framework/blazor.server.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    
+    <script>
+        var modale;
+        window.mostraModale = function (id) {
+            modale = new bootstrap.Modal(document.getElementById(id));
+            modale.show();
+        }
+        window.nascondiModale = function () {
+            if (modale) {
+                modale.hide();
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+
+    <script>
+        window.disegnaMappa = function (lat, lng, zoom, mapId, markers) {
+            var map = L.map(mapId).setView([lat, lng], zoom);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            if (markers != null && markers.length > 0) {
+                for (var i = 0; i < markers.length; i++) {
+                    var marker = L.marker([markers[i].lat, markers[i].lng]).addTo(map);
+                    marker.bindPopup(markers[i].popupContent);
+                }
+            }
+
+
+            // var marker = L.marker([lat, lng]).addTo(map);
+
+            // DotNet.invokeMethodAsync('BlazorDemoComponentsLibrary', 'GetPopUp', mapId)
+            //     .then(data => {
+            //         marker.bindPopup(data);
+            //     });
+
+            
+            //.openPopup()
+        }
+    </script>
 
 </body>
 </html>

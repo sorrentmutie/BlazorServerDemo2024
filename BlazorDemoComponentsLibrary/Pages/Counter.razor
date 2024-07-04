@@ -1,6 +1,7 @@
 ﻿@page "/counter"
 @using BlazorServerDemo2024.Core.DTO
 @inject IJSRuntime JSRuntime
+@inject NavigationManager navigationManager
 
 <PageTitle>Counter</PageTitle>
 
@@ -15,7 +16,7 @@
 <button class="btn btn-primary" @onclick="() => EseguiSayHello()">Esegui SayHello</button>
 
 <button class="btn btn-primary" @onclick="() => EseguiComponent1()">Esegui Component1</button>
-
+<button @onclick="() => NavigaSuCategorie()">Categorie</button>
 
 @somma
 
@@ -30,6 +31,10 @@
     {
         miaClasseDiInterop = new MiaClasseDiInterop(JSRuntime);
         exampleJsInterop = new ExampleJsInterop(JSRuntime);
+    }
+
+    private void NavigaSuCategorie(){
+        navigationManager.NavigateTo("/categories");
     }
 
     private async Task EseguiComponent1()

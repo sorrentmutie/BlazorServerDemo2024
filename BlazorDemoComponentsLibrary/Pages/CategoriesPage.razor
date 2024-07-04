@@ -3,6 +3,7 @@
 @using BlazorServerDemo2024.Core.DTO
 @using Microsoft.EntityFrameworkCore
 @inject IGenericData<Category, CategoriaDTO, CreaCategoriaDTO, int> categoriesData
+@inject IJSRuntime jsRuntime
 
 <h3>Categories Page</h3>
 
@@ -17,6 +18,16 @@ else
         <button class="btn btn-info" @onclick="() => AggiungiCategoria()">Aggiungi Categoria</button>
         <ListaCategorie Categorie="categorie"
             OnEliminaCategoria="Elimina" OnModificaCategoria="Modifica"></ListaCategorie>
+
+        <MyModal Id="modal1" Title="Rimuovi Categoria"
+                 OnSalva="RimuoviCategoria" OnAnnulla="AnnullaCategoria">
+            <ChildContent>
+                <h3>Sei sicuro di voler rimuovere la categoria
+                    @categoriaDTOTemp.Nome
+                </h3>
+            </ChildContent>
+        </MyModal>
+    
     } else
     {
         <Dettaglio TItem="CategoriaDTO" Item="categoriaDTO"
@@ -35,6 +46,18 @@ else
 @code {
     List<CategoriaDTO>? categorie = new List<CategoriaDTO>();
     CategoriaDTO? categoriaDTO;
+    CategoriaDTO categoriaDTOTemp = new CategoriaDTO();
+
+    private async Task RimuoviCategoria(){
+        await categoriesData.EliminaItem(categoriaDTOTemp.Id);
+        categorie = (await categoriesData.EstraiItemsAsync())?.ToList();
+        await jsRuntime.InvokeVoidAsync("nascondiModale");
+    }
+
+    private async Task AnnullaCategoria()
+    {
+        await jsRuntime.InvokeVoidAsync("nascondiModale");
+    }
 
     private async Task Salva(CategoriaDTO categoria)
     {
@@ -66,8 +89,10 @@ else
 
     private async Task Elimina(CategoriaDTO categoriaDTO)
     {
-        await categoriesData.EliminaItem(categoriaDTO.Id);
-        categorie = (await categoriesData.EstraiItemsAsync())?.ToList();
+        categoriaDTOTemp = categoriaDTO;
+        await jsRuntime.InvokeVoidAsync("mostraModale", "modal1");
+        // await categoriesData.EliminaItem(categoriaDTO.Id);
+        // categorie = (await categoriesData.EstraiItemsAsync())?.ToList();
     }
 
 
