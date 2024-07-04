@@ -1,45 +1,57 @@
 ﻿@page "/counter"
 @using BlazorServerDemo2024.Core.DTO
-@* @inject IGenericData<Customer, ClienteDTO, ClienteDTO, string> customersData
- *@
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Counter</PageTitle>
+
 
 <h1>Counter</h1>
 
 <p role="status">Current count: @currentCount</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="() => EseguiMiaSomma()">Esegui codice JavaScript</button>
+<button class="btn btn-primary" @onclick="() => EseguiArrayAsync()">Esegui Array Async</button>
+<button class="btn btn-primary" @onclick="() => EseguiSayHello()">Esegui SayHello</button>
+
+<button class="btn btn-primary" @onclick="() => EseguiComponent1()">Esegui Component1</button>
 
 
-@* @if(customers == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    @foreach (var customer in customers)
-    {
-        <p>@customer.Codice @customer.Nome @customer.IndirizzoCompleto</p>
-    }
-} *@
-
+@somma
 
 <hr/>
 
-
 @code {
+    private int somma = 0;
+    private MiaClasseDiInterop? miaClasseDiInterop;
+    private ExampleJsInterop? exampleJsInterop;
 
-    List<ClienteDTO>? customers;
-
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        // var data = await customersData.EstraiItemsAsync();
-        // if(data is not null)
-        // {
-        //     customers = data.ToList();
-        // }
-        
+        miaClasseDiInterop = new MiaClasseDiInterop(JSRuntime);
+        exampleJsInterop = new ExampleJsInterop(JSRuntime);
+    }
+
+    private async Task EseguiComponent1()
+    {
+        await exampleJsInterop!.Prompt("Ciao, ciao!");
+    }
+
+    private async Task EseguiSayHello()
+    {
+        await miaClasseDiInterop!.ChiamaSayHello("Mario Rossi");
+    }
+
+    private async Task EseguiArrayAsync()
+    {
+       // var miaClasseInterop = new MiaClasseDiInterop(JSRuntime);
+        await miaClasseDiInterop!.RestituisceArrayAsync();
+    }
+
+    private async Task EseguiMiaSomma()
+    {
+        //var miaClasseInterop = new MiaClasseDiInterop(JSRuntime);
+        somma = await miaClasseDiInterop!.EseguiMiaSommaQuadratica(4, 5, 6);
     }
 
     private int currentCount = 0;
@@ -49,10 +61,9 @@ else
         currentCount++;
     }
 
- 
-
-    
-
-
-
+    [JSInvokable]
+    public static Task<int[]> RestituisceArrayAsync()
+    {
+        return Task.FromResult(new int[]{1,2,3,4,5});
+    }
 }
