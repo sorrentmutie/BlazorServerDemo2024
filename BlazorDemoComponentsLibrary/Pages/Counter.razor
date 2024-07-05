@@ -17,6 +17,7 @@
 
 <button class="btn btn-primary" @onclick="() => EseguiComponent1()">Esegui Component1</button>
 <button @onclick="() => NavigaSuCategorie()">Categorie</button>
+<button @onclick="() => ErrorGenerator()">Scatenare Errore</button>
 
 @somma
 
@@ -26,6 +27,11 @@
     private int somma = 0;
     private MiaClasseDiInterop? miaClasseDiInterop;
     private ExampleJsInterop? exampleJsInterop;
+
+    private void ErrorGenerator()
+    {
+        throw new Exception("Errore Gravissimo");
+    }
 
     protected override void OnInitialized()
     {

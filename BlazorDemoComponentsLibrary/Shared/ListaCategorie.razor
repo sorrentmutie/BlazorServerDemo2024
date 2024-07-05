@@ -2,7 +2,8 @@
 
 @if(Categorie is not null)
 {
-    <table class="table table-striped table-bordered table-hover">
+     <div style="height:80px; overflow-y:scroll">
+        <table class="table table-striped table-bordered table-hover">
         <thead>
             <tr>
                 <th>Nome</th>
@@ -12,8 +13,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var categoria in Categorie)
-            {
+            <Virtualize Items="Categorie"  Context="categoria">
                 <tr>
                     <td>@categoria.Nome</td>
                     <td>@categoria.Descrizione</td>
@@ -21,11 +21,13 @@
                     <td>@categoria.NumeroProdotti</td>
                     <td>
                         <button class="btn btn-danger" @onclick="() => OnEliminaCategoria.InvokeAsync(categoria)">Elimina</button>
-                        <button class="btn btn-warning" @onclick="() => OnModificaCategoria.InvokeAsync(categoria)">Modifica</button></td>
+                        <button class="btn btn-warning" @onclick="() => OnModificaCategoria.InvokeAsync(categoria)">Modifica</button>
+                    </td>
                 </tr>
-            }
+            </Virtualize>
         </tbody>
     </table>
+     </div>
 } else
 {
         <p><em>Caricamento Dati...</em></p>

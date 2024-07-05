@@ -11,8 +11,23 @@
         <div class="top-row px-4">
             <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
         </div>
-        @Body
+        <ErrorBoundary @ref="errorBoundary">
+            <ChildContent>
+                @Body
+            </ChildContent>
+            <ErrorContent Context="ex">
+                <h3>@ex.Message</h3>                
+            </ErrorContent>
+        </ErrorBoundary>
+
     </main>
 </div>
 
+@code {
+    private ErrorBoundary? errorBoundary;
 
+    protected override void OnParametersSet()
+    {
+        errorBoundary?.Recover();
+    }
+}

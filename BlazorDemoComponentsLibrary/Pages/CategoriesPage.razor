@@ -16,8 +16,11 @@ else
     @if(categoriaDTO is null)
     {
         <button class="btn btn-info" @onclick="() => AggiungiCategoria()">Aggiungi Categoria</button>
-        <ListaCategorie Categorie="categorie"
-            OnEliminaCategoria="Elimina" OnModificaCategoria="Modifica"></ListaCategorie>
+       
+          
+            <ListaCategorie Categorie="categorie"
+                OnEliminaCategoria="Elimina" OnModificaCategoria="Modifica"></ListaCategorie>
+        
 
         <MyModal Id="modal1" Title="Rimuovi Categoria"
                  OnSalva="RimuoviCategoria" OnAnnulla="AnnullaCategoria">
